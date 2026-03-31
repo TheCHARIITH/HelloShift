@@ -1,175 +1,216 @@
 /**
  * 🌍 HelloShift - Dynamic Greeting SVG Generator
- * A Vercel Serverless Function that generates personalized greetings
- * based on the visitor's local time.
+ * Clean, Minimalist, Modern Design with Apple-style Emojis
  */
 
 // ============================================
-// 📝 DEFAULT GREETINGS DATABASE
+// GREETINGS DATABASE
 // ============================================
 
 const DEFAULT_GREETINGS = {
   morning: [
-    { emoji: '☀️', text: 'Good Morning!' },
-    { emoji: '🌅', text: 'Rise and Shine!' },
-    { emoji: '☕', text: 'Coffee Time!' },
-    { emoji: '🌞', text: 'Hello, Early Bird!' },
-    { emoji: '🌻', text: 'Have a Great Day!' },
-    { emoji: '🍳', text: 'Wakey Wakey!' },
-    { emoji: '🐓', text: 'The Early Bird Gets the Worm!' },
-    { emoji: '✨', text: 'Make Today Amazing!' },
+    { emoji: '2600', text: 'Good Morning' },
+    { emoji: '1F305', text: 'Rise and Shine' },
+    { emoji: '2615', text: 'Coffee Time' },
+    { emoji: '1F31E', text: 'Hello, Early Bird' },
+    { emoji: '1F33B', text: 'Have a Great Day' },
+    { emoji: '2728', text: 'Make Today Amazing' },
+    { emoji: '1F304', text: 'Beautiful Morning' },
+    { emoji: '1F31F', text: 'Shine Bright Today' },
   ],
   afternoon: [
-    { emoji: '☀️', text: 'Good Afternoon!' },
-    { emoji: '🌤️', text: 'Hello There!' },
-    { emoji: '🎯', text: 'Stay Focused!' },
-    { emoji: '💪', text: 'Keep Going Strong!' },
-    { emoji: '🌴', text: 'Halfway Through the Day!' },
-    { emoji: '🚀', text: 'Crushing It!' },
-    { emoji: '⚡', text: 'Powering Through!' },
-    { emoji: '🔥', text: "You're On Fire!" },
+    { emoji: '2600', text: 'Good Afternoon' },
+    { emoji: '1F324', text: 'Hello There' },
+    { emoji: '1F3AF', text: 'Stay Focused' },
+    { emoji: '1F4AA', text: 'Keep Going Strong' },
+    { emoji: '1F680', text: 'Crushing It' },
+    { emoji: '26A1', text: 'Powering Through' },
+    { emoji: '1F525', text: 'You\'re On Fire' },
+    { emoji: '1F4A1', text: 'Bright Ideas Ahead' },
   ],
   evening: [
-    { emoji: '🌆', text: 'Good Evening!' },
-    { emoji: '🌇', text: 'Enjoy Your Evening!' },
-    { emoji: '🍽️', text: 'Dinner Time Soon?' },
-    { emoji: '🌅', text: 'Beautiful Sunset Vibes!' },
-    { emoji: '🎮', text: 'Time to Relax!' },
-    { emoji: '🌙', text: 'Evening Coder?' },
-    { emoji: '🍕', text: 'Pizza Time!' },
-    { emoji: '📺', text: 'Winding Down?' },
+    { emoji: '1F307', text: 'Good Evening' },
+    { emoji: '1F306', text: 'Enjoy Your Evening' },
+    { emoji: '1F37D', text: 'Dinner Time Soon' },
+    { emoji: '1F3AE', text: 'Time to Relax' },
+    { emoji: '1F319', text: 'Evening Vibes' },
+    { emoji: '1F3B5', text: 'Wind Down Time' },
+    { emoji: '1F4FA', text: 'Relax and Unwind' },
+    { emoji: '2728', text: 'Peaceful Evening' },
   ],
   night: [
-    { emoji: '🌙', text: 'Good Night!' },
-    { emoji: '🌟', text: 'Sweet Dreams!' },
-    { emoji: '🦉', text: 'Hello, Night Owl!' },
-    { emoji: '💤', text: 'Go to Sleep!' },
-    { emoji: '🌃', text: 'Late Night Coder?' },
-    { emoji: '⭐', text: 'Burning the Midnight Oil?' },
-    { emoji: '🛏️', text: 'Bed is Calling!' },
-    { emoji: '🌌', text: 'Stargazing Hours!' },
+    { emoji: '1F319', text: 'Good Night' },
+    { emoji: '2B50', text: 'Sweet Dreams' },
+    { emoji: '1F989', text: 'Hello, Night Owl' },
+    { emoji: '1F4A4', text: 'Time for Sleep' },
+    { emoji: '1F303', text: 'Late Night Coder' },
+    { emoji: '1F31F', text: 'Burning Midnight Oil' },
+    { emoji: '1F6CF', text: 'Rest Well' },
+    { emoji: '1F30C', text: 'Stargazing Hours' },
   ],
 };
 
 // ============================================
-// 🎨 THEME DEFINITIONS
+// THEME DEFINITIONS - MINIMALIST
 // ============================================
 
 const THEMES = {
   default: {
-    gradient: ['#667eea', '#764ba2'],
-    textLight: '#1a1a2e',
-    textDark: '#ffffff',
-    subtextLight: '#4a4a6a',
-    subtextDark: '#e0e0e0',
+    bg: '#ffffff',
+    bgDark: '#0d1117',
+    text: '#1a1a1a',
+    textDark: '#f0f0f0',
+    subtext: '#6b7280',
+    subtextDark: '#8b949e',
+    border: '#e5e7eb',
+    borderDark: '#30363d',
+  },
+  clean: {
+    bg: '#fafafa',
+    bgDark: '#161b22',
+    text: '#111827',
+    textDark: '#e6edf3',
+    subtext: '#6b7280',
+    subtextDark: '#8b949e',
+    border: '#e5e7eb',
+    borderDark: '#30363d',
   },
   ocean: {
-    gradient: ['#00c6fb', '#005bea'],
-    textLight: '#0a2540',
-    textDark: '#ffffff',
-    subtextLight: '#1a4a6a',
-    subtextDark: '#b0d4f1',
-  },
-  sunset: {
-    gradient: ['#fa709a', '#fee140'],
-    textLight: '#4a1a2a',
-    textDark: '#ffffff',
-    subtextLight: '#6a3a4a',
-    subtextDark: '#ffe4e1',
+    bg: '#f0f9ff',
+    bgDark: '#0c1929',
+    text: '#0c4a6e',
+    textDark: '#e0f2fe',
+    subtext: '#0369a1',
+    subtextDark: '#7dd3fc',
+    border: '#bae6fd',
+    borderDark: '#1e3a5f',
   },
   forest: {
-    gradient: ['#11998e', '#38ef7d'],
-    textLight: '#0a3a2a',
-    textDark: '#ffffff',
-    subtextLight: '#1a5a4a',
-    subtextDark: '#b0f4d4',
-  },
-  midnight: {
-    gradient: ['#232526', '#414345'],
-    textLight: '#1a1a1a',
-    textDark: '#ffffff',
-    subtextLight: '#3a3a3a',
-    subtextDark: '#c0c0c0',
-  },
-  aurora: {
-    gradient: ['#a8edea', '#fed6e3'],
-    textLight: '#2a4a5a',
-    textDark: '#ffffff',
-    subtextLight: '#4a6a7a',
-    subtextDark: '#e0f0f0',
-  },
-  fire: {
-    gradient: ['#f12711', '#f5af19'],
-    textLight: '#4a1a0a',
-    textDark: '#ffffff',
-    subtextLight: '#6a3a1a',
-    subtextDark: '#ffe4c4',
+    bg: '#f0fdf4',
+    bgDark: '#0a1f0d',
+    text: '#14532d',
+    textDark: '#dcfce7',
+    subtext: '#15803d',
+    subtextDark: '#86efac',
+    border: '#bbf7d0',
+    borderDark: '#1a3d21',
   },
   lavender: {
-    gradient: ['#c471f5', '#fa71cd'],
-    textLight: '#3a1a4a',
-    textDark: '#ffffff',
-    subtextLight: '#5a3a6a',
-    subtextDark: '#f0d4f4',
+    bg: '#faf5ff',
+    bgDark: '#1a0d24',
+    text: '#581c87',
+    textDark: '#f3e8ff',
+    subtext: '#7e22ce',
+    subtextDark: '#d8b4fe',
+    border: '#e9d5ff',
+    borderDark: '#2d1a42',
   },
-  monochrome: {
-    gradient: ['#bdc3c7', '#2c3e50'],
-    textLight: '#1a1a1a',
-    textDark: '#ffffff',
-    subtextLight: '#3a3a3a',
-    subtextDark: '#d0d0d0',
+  rose: {
+    bg: '#fff1f2',
+    bgDark: '#1f0a0d',
+    text: '#9f1239',
+    textDark: '#ffe4e6',
+    subtext: '#be123c',
+    subtextDark: '#fda4af',
+    border: '#fecdd3',
+    borderDark: '#3d1a20',
   },
-  cyberpunk: {
-    gradient: ['#ff00ff', '#00ffff'],
-    textLight: '#1a0a2a',
-    textDark: '#00ff00',
-    subtextLight: '#3a1a4a',
-    subtextDark: '#ff00ff',
+  amber: {
+    bg: '#fffbeb',
+    bgDark: '#1a1508',
+    text: '#92400e',
+    textDark: '#fef3c7',
+    subtext: '#b45309',
+    subtextDark: '#fcd34d',
+    border: '#fde68a',
+    borderDark: '#3d2e0a',
   },
-  minimal: {
-    gradient: ['#ffffff', '#f5f5f5'],
-    textLight: '#1a1a1a',
-    textDark: '#ffffff',
-    subtextLight: '#6a6a6a',
-    subtextDark: '#c0c0c0',
+  slate: {
+    bg: '#f8fafc',
+    bgDark: '#0f172a',
+    text: '#1e293b',
+    textDark: '#e2e8f0',
+    subtext: '#64748b',
+    subtextDark: '#94a3b8',
+    border: '#e2e8f0',
+    borderDark: '#334155',
+  },
+  midnight: {
+    bg: '#f5f5f5',
+    bgDark: '#09090b',
+    text: '#18181b',
+    textDark: '#fafafa',
+    subtext: '#52525b',
+    subtextDark: '#a1a1aa',
+    border: '#e4e4e7',
+    borderDark: '#27272a',
   },
   nord: {
-    gradient: ['#4c566a', '#2e3440'],
-    textLight: '#2e3440',
+    bg: '#eceff4',
+    bgDark: '#2e3440',
+    text: '#2e3440',
     textDark: '#eceff4',
-    subtextLight: '#4c566a',
+    subtext: '#4c566a',
     subtextDark: '#d8dee9',
+    border: '#d8dee9',
+    borderDark: '#3b4252',
   },
-  dracula: {
-    gradient: ['#bd93f9', '#ff79c6'],
-    textLight: '#282a36',
-    textDark: '#f8f8f2',
-    subtextLight: '#44475a',
-    subtextDark: '#6272a4',
+  mono: {
+    bg: '#ffffff',
+    bgDark: '#000000',
+    text: '#000000',
+    textDark: '#ffffff',
+    subtext: '#666666',
+    subtextDark: '#999999',
+    border: '#eeeeee',
+    borderDark: '#222222',
+  },
+  paper: {
+    bg: '#fdfcfb',
+    bgDark: '#1c1917',
+    text: '#292524',
+    textDark: '#fafaf9',
+    subtext: '#78716c',
+    subtextDark: '#a8a29e',
+    border: '#e7e5e4',
+    borderDark: '#44403c',
+  },
+  sky: {
+    bg: '#f0f9ff',
+    bgDark: '#082f49',
+    text: '#0c4a6e',
+    textDark: '#e0f2fe',
+    subtext: '#0284c7',
+    subtextDark: '#38bdf8',
+    border: '#bae6fd',
+    borderDark: '#075985',
   },
 };
 
 // ============================================
-// 🔧 UTILITY FUNCTIONS
+// TWEMOJI CDN (Apple-style emojis)
 // ============================================
 
-/**
- * Get current hour based on timezone
- */
+const TWEMOJI_BASE = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg';
+
+function getEmojiUrl(codepoint) {
+  return `${TWEMOJI_BASE}/${codepoint.toLowerCase()}.svg`;
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
 function getCurrentHour(timezone) {
   try {
     const options = { hour: 'numeric', hour12: false, timeZone: timezone };
     const formatter = new Intl.DateTimeFormat('en-US', options);
     return parseInt(formatter.format(new Date()), 10);
   } catch (error) {
-    // Fallback to UTC
     return new Date().getUTCHours();
   }
 }
 
-/**
- * Determine time block based on hour
- */
 function getTimeBlock(hour, customBlocks = null) {
   const blocks = customBlocks || {
     morning: { start: 5, end: 12 },
@@ -184,16 +225,10 @@ function getTimeBlock(hour, customBlocks = null) {
   return 'night';
 }
 
-/**
- * Get random item from array
- */
 function getRandomItem(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-/**
- * Parse custom greetings from query params
- */
 function parseCustomGreetings(query) {
   const customGreetings = {};
   
@@ -202,14 +237,21 @@ function parseCustomGreetings(query) {
     if (param) {
       try {
         const greetings = param.split('|').map((g) => {
-          const [emoji, ...textParts] = g.split(' ');
-          return { emoji, text: textParts.join(' ') };
+          const parts = g.trim().split(' ');
+          const emoji = parts[0];
+          const text = parts.slice(1).join(' ');
+          // Convert emoji to codepoint if it's an actual emoji
+          let codepoint = emoji;
+          if (emoji.length <= 4 && !/^[0-9A-Fa-f]+$/.test(emoji)) {
+            codepoint = emoji.codePointAt(0).toString(16).toUpperCase();
+          }
+          return { emoji: codepoint, text };
         });
         if (greetings.length > 0) {
           customGreetings[block] = greetings;
         }
       } catch (e) {
-        // Use defaults if parsing fails
+        // Use defaults
       }
     }
   });
@@ -217,258 +259,209 @@ function parseCustomGreetings(query) {
   return Object.keys(customGreetings).length > 0 ? customGreetings : null;
 }
 
-/**
- * Parse custom time blocks from query params
- */
 function parseCustomBlocks(query) {
   try {
     if (query.blocks) {
-      const blocks = JSON.parse(decodeURIComponent(query.blocks));
-      return blocks;
+      return JSON.parse(decodeURIComponent(query.blocks));
     }
   } catch (e) {
-    // Return null if parsing fails
+    // Return null
   }
   return null;
 }
 
-/**
- * Get font CSS (supports Google Fonts)
- */
 function getFontCSS(fontParam) {
   if (!fontParam) {
     return {
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif",
       fontImport: '',
     };
   }
 
-  // Check if it's a Google Fonts URL
   if (fontParam.includes('fonts.googleapis.com')) {
     const urlMatch = fontParam.match(/family=([^:&]+)/);
-    const fontName = urlMatch ? urlMatch[1].replace(/\+/g, ' ') : 'Roboto';
+    const fontName = urlMatch ? urlMatch[1].replace(/\+/g, ' ') : 'Inter';
     return {
       fontFamily: `'${fontName}', sans-serif`,
       fontImport: `@import url('${fontParam}');`,
     };
   }
 
-  // Treat as font family name
   return {
-    fontFamily: `'${fontParam}', sans-serif`,
+    fontFamily: `'${fontParam}', -apple-system, BlinkMacSystemFont, sans-serif`,
     fontImport: '',
   };
 }
 
-/**
- * Parse color - supports hex, rgb, and named colors
- */
 function parseColor(color) {
   if (!color) return null;
-  // Handle URL encoded # symbol
   return color.replace(/%23/g, '#');
 }
 
 // ============================================
-// 🖼️ SVG GENERATOR
+// SVG GENERATOR - CLEAN MINIMALIST DESIGN
 // ============================================
 
 function generateSVG(greeting, options = {}) {
   const {
-    width = 450,
-    height = 120,
+    width = 420,
+    height = 100,
     theme = 'default',
-    themeMode = 'auto', // 'auto', 'light', 'dark'
-    fontSize = 24,
-    fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    themeMode = 'auto',
+    fontSize = 20,
+    fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif",
     fontImport = '',
     customBg = null,
     customTextColor = null,
-    customGradient = null,
-    borderRadius = 15,
+    borderRadius = 12,
     showSubtext = true,
-    subtext = "Welcome to my profile!",
-    animationEnabled = true,
+    subtext = 'Welcome to my profile',
+    showBorder = true,
+    padding = 24,
   } = options;
 
-  // Get theme colors
   const themeColors = THEMES[theme] || THEMES.default;
   
-  // Parse custom gradient
-  let gradient = themeColors.gradient;
-  if (customGradient) {
-    const colors = customGradient.split(',').map(c => parseColor(c.trim()));
-    if (colors.length >= 2) gradient = colors;
-  }
-  if (customBg) {
-    const colors = customBg.split(',').map(c => parseColor(c.trim()));
-    if (colors.length >= 2) gradient = colors;
-    else if (colors.length === 1) gradient = [colors[0], colors[0]];
-  }
+  // Custom colors override
+  const bgLight = customBg ? parseColor(customBg) : themeColors.bg;
+  const bgDark = themeColors.bgDark;
+  const textLight = customTextColor ? parseColor(customTextColor) : themeColors.text;
+  const textDark = customTextColor ? parseColor(customTextColor) : themeColors.textDark;
+  const subtextLight = themeColors.subtext;
+  const subtextDark = themeColors.subtextDark;
+  const borderLight = themeColors.border;
+  const borderDark = themeColors.borderDark;
 
-  // Determine text colors based on mode
-  let textColorLight = customTextColor ? parseColor(customTextColor) : themeColors.textLight;
-  let textColorDark = customTextColor ? parseColor(customTextColor) : themeColors.textDark;
-  let subtextColorLight = themeColors.subtextLight;
-  let subtextColorDark = themeColors.subtextDark;
+  // Emoji settings
+  const emojiSize = 32;
+  const emojiUrl = getEmojiUrl(greeting.emoji);
+  
+  // Layout calculations
+  const emojiX = padding;
+  const textX = padding + emojiSize + 16;
+  const contentHeight = showSubtext ? 44 : 24;
+  const textY = (height - contentHeight) / 2 + (showSubtext ? 14 : 16);
+  const subtextY = textY + 24;
 
-  // Animation CSS
-  const animationCSS = animationEnabled ? `
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-    .greeting-text { animation: fadeIn 0.6s ease-out; }
-    .emoji { animation: pulse 2s ease-in-out infinite; }
-  ` : '';
-
-  // Build theme mode styles
+  // Build theme styles
   let themeStyles = '';
   
   if (themeMode === 'auto') {
     themeStyles = `
-      .greeting-text { fill: ${textColorLight}; }
-      .subtext { fill: ${subtextColorLight}; }
+      .card-bg { fill: ${bgLight}; }
+      .card-border { stroke: ${borderLight}; }
+      .greeting-text { fill: ${textLight}; }
+      .subtext { fill: ${subtextLight}; }
+      
       @media (prefers-color-scheme: dark) {
-        .greeting-text { fill: ${textColorDark}; }
-        .subtext { fill: ${subtextColorDark}; }
+        .card-bg { fill: ${bgDark}; }
+        .card-border { stroke: ${borderDark}; }
+        .greeting-text { fill: ${textDark}; }
+        .subtext { fill: ${subtextDark}; }
       }
     `;
   } else if (themeMode === 'dark') {
     themeStyles = `
-      .greeting-text { fill: ${textColorDark}; }
-      .subtext { fill: ${subtextColorDark}; }
+      .card-bg { fill: ${bgDark}; }
+      .card-border { stroke: ${borderDark}; }
+      .greeting-text { fill: ${textDark}; }
+      .subtext { fill: ${subtextDark}; }
     `;
   } else {
     themeStyles = `
-      .greeting-text { fill: ${textColorLight}; }
-      .subtext { fill: ${subtextColorLight}; }
+      .card-bg { fill: ${bgLight}; }
+      .card-border { stroke: ${borderLight}; }
+      .greeting-text { fill: ${textLight}; }
+      .subtext { fill: ${subtextLight}; }
     `;
   }
 
-  // Calculate positions
-  const emojiSize = fontSize * 1.5;
-  const textY = showSubtext ? height / 2 - 5 : height / 2 + 8;
-  const subtextY = height / 2 + 25;
-  const emojiX = 30;
-  const textX = emojiX + emojiSize + 15;
+  const borderStyle = showBorder ? `stroke-width="1"` : `stroke-width="0"`;
 
-  const svg = `
-<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-  <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:${gradient[0]};stop-opacity:1" />
-      <stop offset="100%" style="stop-color:${gradient[1]};stop-opacity:1" />
-    </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-opacity="0.2"/>
-    </filter>
-  </defs>
-  
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
   <style>
     ${fontImport}
     
-    * {
-      font-family: ${fontFamily};
-    }
-    
-    .card {
-      filter: url(#shadow);
-    }
-    
     .greeting-text {
+      font-family: ${fontFamily};
       font-size: ${fontSize}px;
       font-weight: 600;
-      dominant-baseline: middle;
+      letter-spacing: -0.02em;
     }
     
     .subtext {
-      font-size: ${Math.max(12, fontSize * 0.5)}px;
+      font-family: ${fontFamily};
+      font-size: ${Math.max(12, fontSize * 0.65)}px;
       font-weight: 400;
-      dominant-baseline: middle;
-      opacity: 0.8;
-    }
-    
-    .emoji {
-      font-size: ${emojiSize}px;
-      dominant-baseline: middle;
+      letter-spacing: -0.01em;
     }
     
     ${themeStyles}
-    ${animationCSS}
   </style>
   
-  <!-- Card Background -->
   <rect 
-    class="card"
-    x="5" 
-    y="5" 
-    width="${width - 10}" 
-    height="${height - 10}" 
+    class="card-bg card-border"
+    x="0.5" 
+    y="0.5" 
+    width="${width - 1}" 
+    height="${height - 1}" 
     rx="${borderRadius}" 
-    ry="${borderRadius}" 
-    fill="url(#bgGradient)"
+    ry="${borderRadius}"
+    ${borderStyle}
   />
   
-  <!-- Emoji -->
-  <text 
-    class="emoji" 
+  <image 
+    href="${emojiUrl}" 
     x="${emojiX}" 
-    y="${height / 2}"
-    dominant-baseline="middle"
-  >${greeting.emoji}</text>
+    y="${(height - emojiSize) / 2}"
+    width="${emojiSize}" 
+    height="${emojiSize}"
+  />
   
-  <!-- Greeting Text -->
   <text 
     class="greeting-text" 
     x="${textX}" 
     y="${textY}"
+    dominant-baseline="middle"
   >${greeting.text}</text>
   
   ${showSubtext ? `
-  <!-- Subtext -->
   <text 
     class="subtext" 
     x="${textX}" 
     y="${subtextY}"
+    dominant-baseline="middle"
   >${subtext}</text>
   ` : ''}
-</svg>`.trim();
+</svg>`;
 
-  return svg;
+  return svg.trim();
 }
 
 // ============================================
-// 🚀 MAIN HANDLER
+// MAIN HANDLER
 // ============================================
 
 module.exports = async (req, res) => {
   try {
     const query = req.query;
     
-    // ========== TIMEZONE HANDLING ==========
+    // Timezone handling
     let timezone = 'UTC';
     
     if (query.timezone) {
-      // User specified timezone
       timezone = query.timezone;
     } else if (query.auto !== 'false') {
-      // Auto-detect from Vercel headers
       const vercelTimezone = req.headers['x-vercel-ip-timezone'];
       if (vercelTimezone) {
         timezone = vercelTimezone;
       }
     }
     
-    // ========== TIME BLOCK DETERMINATION ==========
+    // Time block
     const customBlocks = parseCustomBlocks(query);
     const currentHour = getCurrentHour(timezone);
     
-    // Allow forcing a specific block
     let timeBlock;
     if (query.block && ['morning', 'afternoon', 'evening', 'night'].includes(query.block)) {
       timeBlock = query.block;
@@ -476,44 +469,43 @@ module.exports = async (req, res) => {
       timeBlock = getTimeBlock(currentHour, customBlocks);
     }
     
-    // ========== GREETING SELECTION ==========
+    // Greeting selection
     const customGreetings = parseCustomGreetings(query);
     const greetingsSource = customGreetings || DEFAULT_GREETINGS;
     const greetingsArray = greetingsSource[timeBlock] || DEFAULT_GREETINGS[timeBlock];
     const greeting = getRandomItem(greetingsArray);
     
-    // ========== THEME AND STYLING ==========
+    // Theme and styling
     const theme = query.theme || 'default';
-    const themeMode = query.mode || 'auto'; // 'auto', 'light', 'dark'
+    const themeMode = query.mode || 'auto';
     
     // Font handling
     const { fontFamily, fontImport } = getFontCSS(query.font);
     
-    // ========== GENERATE SVG ==========
+    // Generate SVG
     const svg = generateSVG(greeting, {
-      width: parseInt(query.width, 10) || 450,
-      height: parseInt(query.height, 10) || 120,
+      width: parseInt(query.width, 10) || 420,
+      height: parseInt(query.height, 10) || 100,
       theme,
       themeMode,
-      fontSize: parseInt(query.fontSize, 10) || 24,
+      fontSize: parseInt(query.fontSize, 10) || 20,
       fontFamily,
       fontImport,
       customBg: query.bg,
       customTextColor: query.textColor,
-      customGradient: query.gradient,
-      borderRadius: parseInt(query.borderRadius, 10) || 15,
+      borderRadius: parseInt(query.borderRadius, 10) || 12,
       showSubtext: query.subtext !== 'false' && query.subtext !== '',
-      subtext: query.subtext && query.subtext !== 'true' ? query.subtext : 'Welcome to my profile!',
-      animationEnabled: query.animation !== 'false',
+      subtext: query.subtext && query.subtext !== 'true' ? decodeURIComponent(query.subtext) : 'Welcome to my profile',
+      showBorder: query.border !== 'false',
+      padding: parseInt(query.padding, 10) || 24,
     });
     
-    // ========== RESPONSE ==========
+    // Response
     res.setHeader('Content-Type', 'image/svg+xml');
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
     
-    // Add debug headers in development
     if (query.debug === 'true') {
       res.setHeader('X-HelloShift-Timezone', timezone);
       res.setHeader('X-HelloShift-Hour', currentHour.toString());
@@ -525,14 +517,18 @@ module.exports = async (req, res) => {
   } catch (error) {
     console.error('HelloShift Error:', error);
     
-    // Return error SVG
-    const errorSvg = `
-<svg xmlns="http://www.w3.org/2000/svg" width="450" height="120" viewBox="0 0 450 120">
-  <rect x="5" y="5" width="440" height="110" rx="15" fill="#ff6b6b"/>
-  <text x="225" y="60" text-anchor="middle" fill="white" font-size="18" font-family="sans-serif">
-    ⚠️ HelloShift Error - Please check your parameters
-  </text>
-</svg>`.trim();
+    const errorSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="420" height="100" viewBox="0 0 420 100">
+  <style>
+    .bg { fill: #fef2f2; }
+    .text { fill: #991b1b; font-family: -apple-system, sans-serif; font-size: 14px; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #1f0a0a; }
+      .text { fill: #fecaca; }
+    }
+  </style>
+  <rect class="bg" width="420" height="100" rx="12"/>
+  <text class="text" x="210" y="55" text-anchor="middle">Something went wrong</text>
+</svg>`;
     
     res.setHeader('Content-Type', 'image/svg+xml');
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
